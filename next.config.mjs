@@ -1,19 +1,12 @@
 /** @type {import('next').NextConfig} */
 const nextConfig = {
   images: {
-    domains: [
-      'boltzmann.s3.amazonaws.com', // Your S3 bucket domain
-      '127.0.0.1', // Added localhost domain
-      // Add other domains you use for images here if needed
-    ],
-    
-    // Alternative (Next.js 13+ recommended syntax):
     remotePatterns: [
       {
         protocol: 'https',
         hostname: 'boltzmann.s3.amazonaws.com',
         port: '',
-        pathname: '/filer_public/**', // Adjust if your images are in different paths
+        pathname: '/filer_public/**', // Adjust based on actual S3 path
       },
       {
         protocol: 'http',
@@ -23,8 +16,8 @@ const nextConfig = {
       },
     ],
   },
-  
-  // Other Next.js configuration options can go here
+
+  // Other Next.js config options can go here
 };
 
 export default nextConfig;
