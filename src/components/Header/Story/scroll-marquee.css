@@ -1,0 +1,9 @@
+@keyframes scrollText {
+  0% { transform: translateX(0); }
+  100% { transform: translateX(-50%); }
+}
+
+.scroll-marquee-wrapper {
+  display: inline-block;
+  animation: scrollText 15s linear infinite;
+}
