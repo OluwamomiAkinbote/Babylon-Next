@@ -44,8 +44,8 @@ async function getPostData(slug) {
 }
 
 export async function generateMetadata(props) {
- const { slug } = props.params;
-
+  const params = await props.params; // 👈 Await this
+  const { slug } = params;
 
   const post = await getPostData(slug);
 
@@ -91,7 +91,8 @@ export async function generateMetadata(props) {
 
 
 export default async function BlogPage(props) {
-  const { slug } = props.params;
+  const params = await props.params; // 👈 Await the params object
+  const { slug } = params;
 
   const post = await getPostData(slug);
 
