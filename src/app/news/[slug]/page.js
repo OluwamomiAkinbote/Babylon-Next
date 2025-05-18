@@ -58,7 +58,7 @@ export async function generateMetadata({ params }) {
 
   // Use the SEO data from the API response if available
   const seo = post.seo || {};
-  const imageUrl = seo.image_url || post?.media?.[0]?.media_url || `${API_URL}/static/images/Breakingnews.png`;
+  const imageUrl = seo.image_url || `${API_URL}/static/images/Breakingnews.png`;
 
   return {
     title: seo.title || post.title || 'Newstropy - Latest News',
