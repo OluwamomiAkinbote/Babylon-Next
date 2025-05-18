@@ -5,8 +5,7 @@ const nextConfig = {
       {
         protocol: 'https',
         hostname: 'boltzmann.s3.amazonaws.com',
-        port: '',
-        pathname: '/filer_public/**', // Adjust based on actual S3 path
+        pathname: '/filer_public/**',
       },
       {
         protocol: 'http',
@@ -14,10 +13,18 @@ const nextConfig = {
         port: '8000',
         pathname: '/static/images/**',
       },
+      {
+        protocol: 'https',
+        hostname: 'ayo.newstropy.online',
+        pathname: '/static/images/**',
+      },
+      {
+        protocol: 'https',
+        hostname: 'ayo.newstropy.online',
+        pathname: '/media/**',
+      },
     ],
   },
-
-  // Other Next.js config options can go here
 };
 
 export default nextConfig;
