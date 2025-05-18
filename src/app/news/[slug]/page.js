@@ -1,7 +1,7 @@
 import BlogDetails from '@/components/PostDetails/BlogDetails';
 import { notFound } from 'next/navigation';
 import { API_URL } from '@/components/config';
-
+import "./../../globals.css";
 
 // Fetch all posts for static generation
 export async function generateStaticParams() {
@@ -44,50 +44,48 @@ async function getPostData(slug) {
   }
 }
 
-export async function generateMetadata({ params }) {
+export async function generateMetadata(props) {
+  const params = await props.params;
   const { slug } = params;
 
   const post = await getPostData(slug);
 
-  if (!post) {
+  if (!post || !post.seo) {
     return {
       title: 'Post Not Found - Newstropy',
       description: 'The requested news article could not be found',
     };
   }
 
-  // Use the SEO data from the API response if available
-  const seo = post.seo || {};
-  const imageUrl = seo.image_url || `${API_URL}/static/images/Breakingnews.png`;
+  const seo = post.seo;
 
   return {
-    title: seo.title || post.title || 'Newstropy - Latest News',
-    description: seo.description || post.lead || 'Stay updated with the latest news from Newstropy',
+    title: seo.title || 'Newstropy - Latest News',
+    description: seo.description || 'Stay updated with the latest news from Newstropy',
     metadataBase: new URL(API_URL),
     alternates: {
-      canonical: `/news/${slug}`,
+      canonical: seo.url || `/news/${slug}`,
     },
     openGraph: {
-      title: seo.title || post.title || 'Newstropy - Latest News',
-      description: seo.description || post.lead || 'Stay updated with the latest news from Newstropy',
-      url: `/news/${slug}`,
+      title: seo.title || 'Newstropy - Latest News',
+      description: seo.description || 'Stay updated with the latest news from Newstropy',
+      url: seo.url || `/news/${slug}`,
       type: seo.type || 'article',
-      publishedTime: seo.date || post.date,
-      authors: seo.author ? [seo.author] : undefined,
+      publishedTime: seo.date || null,
       images: [
         {
-          url: imageUrl,
+          url: seo.image_url || `${API_URL}/static/images/Breakingnews.png`,
           width: 1200,
           height: 630,
-          alt: seo.title || post.title || 'Newstropy News',
+          alt: seo.title || 'Newstropy News',
         },
       ],
     },
     twitter: {
       card: 'summary_large_image',
-      title: seo.title || post.title || 'Newstropy - Latest News',
-      description: seo.description || post.lead || 'Stay updated with the latest news from Newstropy',
-      images: [imageUrl],
+      title: seo.title || 'Newstropy - Latest News',
+      description: seo.description || 'Stay updated with the latest news from Newstropy',
+      images: [seo.image_url || `${API_URL}/static/images/Breakingnews.png`],
     },
   };
 }
