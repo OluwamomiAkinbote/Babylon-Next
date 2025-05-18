@@ -44,8 +44,7 @@ async function getPostData(slug) {
   }
 }
 
-export async function generateMetadata(props) {
-  const params = await props.params; // 👈 Await this
+export async function generateMetadata({ params }) {
   const { slug } = params;
 
   const post = await getPostData(slug);
@@ -57,34 +56,37 @@ export async function generateMetadata(props) {
     };
   }
 
-  const imageUrl = post?.media?.[0]?.media_url || `${API_URL}/static/images/Breakingnews.png`;
+  // Use the SEO data from the API response if available
+  const seo = post.seo || {};
+  const imageUrl = seo.image_url || post?.media?.[0]?.media_url || `${API_URL}/static/images/Breakingnews.png`;
 
   return {
-    title: post.title || 'Newstropy - Latest News',
-    description: post.lead || 'Stay updated with the latest news from Newstropy',
+    title: seo.title || post.title || 'Newstropy - Latest News',
+    description: seo.description || post.lead || 'Stay updated with the latest news from Newstropy',
     metadataBase: new URL(API_URL),
     alternates: {
       canonical: `/news/${slug}`,
     },
     openGraph: {
-      title: post.title || 'Newstropy - Latest News',
-      description: post.lead || 'Stay updated with the latest news from Newstropy',
+      title: seo.title || post.title || 'Newstropy - Latest News',
+      description: seo.description || post.lead || 'Stay updated with the latest news from Newstropy',
       url: `/news/${slug}`,
-      type: 'article',
-      publishedTime: post.date,
+      type: seo.type || 'article',
+      publishedTime: seo.date || post.date,
+      authors: seo.author ? [seo.author] : undefined,
       images: [
         {
           url: imageUrl,
           width: 1200,
           height: 630,
-          alt: post.title || 'Newstropy News',
+          alt: seo.title || post.title || 'Newstropy News',
         },
       ],
     },
     twitter: {
       card: 'summary_large_image',
-      title: post.title || 'Newstropy - Latest News',
-      description: post.lead || 'Stay updated with the latest news from Newstropy',
+      title: seo.title || post.title || 'Newstropy - Latest News',
+      description: seo.description || post.lead || 'Stay updated with the latest news from Newstropy',
       images: [imageUrl],
     },
   };
