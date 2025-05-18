@@ -2,6 +2,7 @@ import BlogDetails from '@/components/PostDetails/BlogDetails';
 import { notFound } from 'next/navigation';
 import { API_URL } from '@/components/config';
 
+
 // Fetch all posts for static generation
 export async function generateStaticParams() {
   try {

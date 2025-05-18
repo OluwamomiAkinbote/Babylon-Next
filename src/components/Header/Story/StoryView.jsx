@@ -1,9 +1,12 @@
-import React, { useEffect, useState } from 'react';
+'use client';
+
+import { useEffect, useState } from 'react';
 import axios from 'axios';
 import { Play, Pause, X } from 'lucide-react';
 import StoriesHeader from './StoriesHeader';
 import { API_URL } from '../../config';
 import { ChevronLeftIcon, ChevronRightIcon } from '@heroicons/react/24/solid';
+import Image from 'next/image';
 
 const formatTime = (time) => {
     const minutes = Math.floor(time / 60);
@@ -18,7 +21,7 @@ const StoryView = () => {
     const [progress, setProgress] = useState(0);
     const [isPlaying, setIsPlaying] = useState(true);
     const [mediaDuration, setMediaDuration] = useState(7); // Default 7s for images
-    const [isMuted, setIsMuted] = useState(false); // Default unmuted
+    const [isMuted, setIsMuted] = useState(false);
     const [videoProgress, setVideoProgress] = useState(0);
     const [currentTime, setCurrentTime] = useState(0);
 
@@ -92,7 +95,7 @@ const StoryView = () => {
         const currentMedia = selectedStory.media_files[currentMediaIndex];
 
         return (
-            <div className="fixed inset-0 z-50 bg-black bg-balck flex flex-col items-center justify-center">
+            <div className="fixed inset-0 z-50 bg-black flex flex-col items-center justify-center">
                 <div className="relative w-full sm:w-[300px] md:w-[350px] h-[600px] sm:h-[700px] flex justify-center items-center">
                     {/* Story Progress Bar */}
                     <div className="absolute top-2 left-4 right-4 flex space-x-1">
@@ -110,10 +113,10 @@ const StoryView = () => {
 
                     {/* Control Buttons */}
                     <div className="absolute top-6 right-4 flex items-center space-x-2 text-white z-50">
-                        <button onClick={togglePlayPause}>
+                        <button onClick={togglePlayPause} aria-label={isPlaying ? 'Pause' : 'Play'}>
                             {isPlaying ? <Pause /> : <Play />}
                         </button>
-                        <button onClick={closeStory}>
+                        <button onClick={closeStory} aria-label="Close">
                             <X />
                         </button>
                     </div>
@@ -144,38 +147,38 @@ const StoryView = () => {
                                 <source src={currentMedia.media} type="video/mp4" />
                             </video>
                         ) : (
-                            <img
+                            <Image
                                 key={currentMedia.id}
                                 src={currentMedia.media}
                                 alt="story"
                                 className="max-w-full max-h-full object-contain"
-                                onLoad={() => setMediaDuration(7)}
+                                onLoadingComplete={() => setMediaDuration(7)}
+                                fill
+                                sizes="(max-width: 768px) 100vw, 350px"
                             />
                         )}
                     </div>
 
-
-                    {/* Prev Arrow */}
+                    {/* Navigation Arrows */}
                     <button
                         onClick={() =>
                             setCurrentMediaIndex(currentMediaIndex - 1 >= 0 ? currentMediaIndex - 1 : 0)
                         }
                         className="absolute left-4 top-1/2 -translate-y-1/2 z-50 p-2 rounded-full bg-white shadow-md hover:bg-gray-100"
+                        aria-label="Previous"
                     >
                         <ChevronLeftIcon className="w-6 h-6 text-black" />
                     </button>
 
-                    {/* Next Arrow */}
                     <button
                         onClick={nextMedia}
                         className="absolute right-4 top-1/2 -translate-y-1/2 z-50 p-2 rounded-full bg-white shadow-md hover:bg-gray-100"
+                        aria-label="Next"
                     >
                         <ChevronRightIcon className="w-6 h-6 text-black" />
                     </button>
 
-
-
-                    {/* Video Controls at Bottom-1/4 */}
+                    {/* Video Controls */}
                     {currentMedia.media.endsWith('.mp4') && (
                         <div className="absolute bottom-1/4 w-full px-6 flex flex-col items-center space-y-2">
                             <div className="w-full h-1 bg-gray-700 rounded">
@@ -186,7 +189,10 @@ const StoryView = () => {
                             </div>
                             <div className="w-full flex justify-between items-center text-white text-sm font-medium">
                                 <span>{formatTime(currentTime)} / {formatTime(mediaDuration)}</span>
-                                <button onClick={() => setIsMuted(prev => !prev)}>
+                                <button 
+                                  onClick={() => setIsMuted(prev => !prev)}
+                                  aria-label={isMuted ? 'Unmute' : 'Mute'}
+                                >
                                     {isMuted ? 'Unmute' : 'Mute'}
                                 </button>
                             </div>
@@ -195,9 +201,8 @@ const StoryView = () => {
                 </div>
 
                 <div className="absolute bottom-0 w-full h-36 bg-gradient-to-t from-black to-black/24 px-4 flex items-end justify-center text-white text-sm">
-                        <p className="pb-12 font-medium">{currentMedia.caption}</p>
+                    <p className="pb-12 font-medium">{currentMedia.caption}</p>
                 </div>
-
             </div>
         );
     }

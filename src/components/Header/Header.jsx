@@ -1,4 +1,4 @@
-"use client"; // Important: mark component as client-side in Next.js App Router
+'use client';
 
 import { useEffect, useState } from "react";
 import Link from "next/link";
@@ -9,6 +9,7 @@ import { ChevronDown } from "lucide-react";
 import { API_URL } from "../config";
 import StoryView from "./Story/StoryView";
 import MediaRenderer from "../Home/MediaRenderer";
+import Image from "next/image";
 
 const Header = () => {
   const [navbarCategories, setNavbarCategories] = useState([]);
@@ -19,8 +20,6 @@ const Header = () => {
   const router = useRouter();
 
   const handleMediaClick = (slug) => {
-    console.log(`Media clicked with slug: ${slug}`);
-    // Navigate programmatically in Next.js
     router.push(`/news/${slug}`);
   };
 
@@ -37,10 +36,13 @@ const Header = () => {
         {/* Mobile Header */}
         <div className="container mx-auto flex justify-between items-center p-4 md:hidden">
           <Link href="/">
-            <img
+            <Image
               src={`${API_URL}/static/images/logoheader.png`}
               alt="Logo"
-              className="h-10"
+              className="h-12"
+              width={50}
+              height={50}
+              priority
             />
           </Link>
           <div className="flex items-center space-x-4">
@@ -50,7 +52,11 @@ const Header = () => {
             <Link href="/register/step-one">
               <FaUserPlus size={20} className="text-green-600" />
             </Link>
-            <button onClick={() => setMenuOpen(true)} className="text-green-600">
+            <button 
+              onClick={() => setMenuOpen(true)} 
+              className="text-green-600"
+              aria-label="Open menu"
+            >
               <FaBars size={24} />
             </button>
           </div>
@@ -59,10 +65,13 @@ const Header = () => {
         {/* Desktop Header */}
         <div className="hidden md:flex justify-between items-center px-4 py-2 container mx-auto">
           <Link href="/">
-            <img
+            <Image
               src={`${API_URL}/static/images/logoheader.png`}
               alt="Logo"
               className="h-12"
+              width={50}
+              height={50}
+              priority
             />
           </Link>
 
@@ -91,10 +100,10 @@ const Header = () => {
           </nav>
 
           <div className="flex items-center space-x-4">
-            <Link href="/signin" className="text-green-600">
+            <Link href="/signin" className="text-green-600" aria-label="Sign in">
               <FaUser size={24} />
             </Link>
-            <Link href="/register/step-one" className="text-green-600">
+            <Link href="/register/step-one" className="text-green-600" aria-label="Register">
               <FaUserPlus size={24} />
             </Link>
             <div className="bg-gray-100 border border-gray-300 rounded-full px-4 py-1 flex items-center">
@@ -103,6 +112,7 @@ const Header = () => {
                 type="text"
                 placeholder="Search"
                 className="bg-transparent focus:outline-none text-gray-800 w-32"
+                aria-label="Search"
               />
             </div>
           </div>
@@ -154,9 +164,9 @@ const Header = () => {
                           <div
                             key={i}
                             onClick={() => handleMediaClick(post.slug)}
-                            className="cursor-pointer group flex gap-3 hover:bg-gray-50 p-2  transition items-center"
+                            className="cursor-pointer group flex gap-3 hover:bg-gray-50 p-2 transition items-center"
                           >
-                            <div className="w-24 h-16 overflow-hidden flex-shrink-0">
+                            <div className="w-24 h-16 overflow-hidden flex-shrink-0 relative">
                               <MediaRenderer
                                 media={post.media}
                                 className="w-full h-full object-cover"
@@ -182,20 +192,30 @@ const Header = () => {
             <button
               className="absolute top-4 right-4 text-green-600"
               onClick={() => setMenuOpen(false)}
+              aria-label="Close menu"
             >
               <FaTimes size={30} />
             </button>
             <div className="mt-10 space-y-4">
               {navbarCategories.map((cat, index) => (
                 <div key={index}>
-                  <Link href={`/category/${cat.slug}`} className="font-semibold text-lg">
+                  <Link 
+                    href={`/category/${cat.slug}`} 
+                    className="font-semibold text-lg"
+                    onClick={() => setMenuOpen(false)}
+                  >
                     {cat.name}
                   </Link>
                   {cat.has_subcategories && (
                     <ul className="ml-4 mt-2 space-y-1 text-sm text-gray-700">
                       {cat.subcategories.map((sub, i) => (
                         <li key={i}>
-                          <Link href={`/category/${sub.slug}`}>{sub.name}</Link>
+                          <Link 
+                            href={`/category/${sub.slug}`}
+                            onClick={() => setMenuOpen(false)}
+                          >
+                            {sub.name}
+                          </Link>
                         </li>
                       ))}
                     </ul>

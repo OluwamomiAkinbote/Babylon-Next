@@ -1,10 +1,12 @@
-"use client";
+// app/components/LatestNews.js
+'use client'
 
 import { useEffect, useState } from "react";
 import axios from "axios";
-import { ChevronLeft, ChevronRight } from "lucide-react";
+import { ChevronLeft, ChevronRight, Clock } from "lucide-react";
 import MediaRenderer from "./MediaRenderer";
 import { API_URL } from "../config";
+import { useRouter } from "next/navigation";
 
 const LatestNews = () => {
   const [mainPost, setMainPost] = useState(null);
@@ -13,6 +15,7 @@ const LatestNews = () => {
   const [politicsIndex, setPoliticsIndex] = useState(0);
   const [exclusiveIndex, setExclusiveIndex] = useState(0);
   const postsPerPage = 5;
+  const router = useRouter();
 
   const formatDate = (dateString) => {
     return new Date(dateString).toLocaleString("en-US", {
@@ -67,7 +70,7 @@ const LatestNews = () => {
   };
 
   const handleMediaClick = (slug) => {
-    window.location.href = `/news/${slug}`;
+    router.push(`/news/${slug}`);
   };
 
   return (
@@ -109,10 +112,10 @@ const LatestNews = () => {
                     <p className="font-semibold text-gray-900 text-sm sm:text-base">Newstropy</p>
                   </div>
                   <div className="meta text-xs text-gray-600 flex items-center mt-2 ">
-                    <i className="fas fa-clock text-red-500 text-[0.8rem] mr-1"></i>
+                    <Clock className="text-red-500 text-xs mr-1" size={14} />
                     <p className="text-gray-700 text-sm">{formatDate(mainPost.date)}</p>
                   </div>
-                  <p className="text-gray-600 mt-2 text-lg  font-normal ">
+                  <p className="text-gray-600 mt-2 text-lg font-normal">
                     {stripHtml(mainPost.content)?.slice(0, 160) + "..."}
                   </p>
                   <a href={`/news/${mainPost.slug}`} className="text-red-600 hover:underline mt-4 block rounded-md shadow w-2/4 p-2 capitalize font-semibold bg-gray-200 text-lg">
@@ -142,7 +145,7 @@ const LatestNews = () => {
                       {post.title.length > 75 ? post.title.substring(0, 75) + "..." : post.title}
                     </a>
                     <div className="flex items-center text-gray-700 text-sm">
-                      <i className="fas fa-clock text-red-500 text-xs mr-1"></i>
+                      <Clock className="text-red-500 text-xs mr-1" size={14} />
                       <span>{formatDate(post.date)}</span>
                     </div>
                   </div>
@@ -181,10 +184,10 @@ const LatestNews = () => {
               {exclusivePosts.slice(exclusiveIndex, exclusiveIndex + postsPerPage).map((post) => (
                 <div key={post.id} className="mb-4 border-b pb-4">
                   <a href={`/news/${post.slug}`} className="sm:text-md font-medium text-gray-900 hover:underline block mb-2">
-                    {post.title }
+                    {post.title}
                   </a>
                   <div className="flex items-center text-gray-700 text-sm">
-                    <i className="fas fa-clock text-red-500 text-xs mr-1"></i>
+                    <Clock className="text-red-500 text-xs mr-1" size={14} />
                     <span>{formatDate(post.date)}</span>
                   </div>
                 </div>

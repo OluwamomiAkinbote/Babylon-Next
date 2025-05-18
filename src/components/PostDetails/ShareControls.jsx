@@ -1,4 +1,17 @@
 import React, { useState, useRef, useEffect } from 'react';
+import { 
+  Share2, 
+  ChevronDown, 
+  Type, 
+  TextCursorInput,
+  Facebook,
+  Linkedin,
+  Instagram,
+  MessageCircle,
+  Twitter,
+  Link2,
+  Check
+} from 'lucide-react';
 
 const ShareControls = ({ title, url, lead, contentRef, slug }) => {
   const [showShareDropdown, setShowShareDropdown] = useState(false);
@@ -47,38 +60,30 @@ const ShareControls = ({ title, url, lead, contentRef, slug }) => {
   }, []);
 
   const handleCopy = () => {
-    
     const baseUrl = typeof window !== "undefined" ? window.location.origin : "https://www.newstropy.online";
     const shortLink = `${baseUrl}/news/${slug}`;
 
-    // Prepare the full text to copy
     let textToCopy = `${lead}\n\n${shortLink}`;
-
-    // Check for available space and truncate for Twitter (max 280 chars)
     const maxTwitterChars = 350;
-    const remainingChars = maxTwitterChars - shortLink.length - 2; // 2 for \n\n
+    const remainingChars = maxTwitterChars - shortLink.length - 2;
 
     if (textToCopy.length > maxTwitterChars) {
-        // For text truncation: trim the lead text to fit the character limit
-        let allowedLeadLength = remainingChars > 0 ? remainingChars : 0;
-        let trimmedLead = lead.slice(0, allowedLeadLength);
-        
-        // Trim to the last full word
-        const lastSpaceIndex = trimmedLead.lastIndexOf(" ");
-        if (lastSpaceIndex > -1) {
-            trimmedLead = trimmedLead.slice(0, lastSpaceIndex);
-        }
+      let allowedLeadLength = remainingChars > 0 ? remainingChars : 0;
+      let trimmedLead = lead.slice(0, allowedLeadLength);
+      
+      const lastSpaceIndex = trimmedLead.lastIndexOf(" ");
+      if (lastSpaceIndex > -1) {
+          trimmedLead = trimmedLead.slice(0, lastSpaceIndex);
+      }
 
-        // Final copy text for Twitter
-        textToCopy = `${trimmedLead}...\n\n${shortLink}`;
+      textToCopy = `${trimmedLead}...\n\n${shortLink}`;
     }
 
     navigator.clipboard.writeText(textToCopy).then(() => {
-        setCopied(true);
-        setTimeout(() => setCopied(false), 2000);
+      setCopied(true);
+      setTimeout(() => setCopied(false), 2000);
     });
-};
-
+  };
 
   const handleClickOutside = (e) => {
     if (dropdownRef.current && !dropdownRef.current.contains(e.target)) {
@@ -128,14 +133,14 @@ const ShareControls = ({ title, url, lead, contentRef, slug }) => {
           className="p-2 bg-gray-800 text-white rounded-sm flex items-center gap-2 hover:bg-gray-900 transition-colors"
           aria-label="Share options"
         >
-          <i className="fas fa-share-alt"></i>
+          <Share2 size={16} />
           <span className="font-semibold text-sm">Share</span>
         </button>
 
         {showShareDropdown && (
           <div
             ref={dropdownRef}
-            className="absolute left-0 mt-1 bg-white shadow-lg rounded-md border border-gray-400 z-10 py-1 flex flex-col "
+            className="absolute left-0 mt-1 bg-white shadow-lg rounded-md border border-gray-400 z-10 py-1 flex flex-col"
           >
             <a
               href={`https://twitter.com/intent/tweet?text=${encodeURIComponent(title)}&url=${encodeURIComponent(url)}`}
@@ -144,7 +149,7 @@ const ShareControls = ({ title, url, lead, contentRef, slug }) => {
               className="p-2 flex items-center text-gray-700 hover:bg-gray-100"
               aria-label="Share on Twitter"
             >
-              <i className="fab fa-twitter mr-2 text-xl" />
+              <Twitter size={20} className="mr-2" />
               <span className="text-sm">Twitter</span>
             </a>
             <a
@@ -154,7 +159,7 @@ const ShareControls = ({ title, url, lead, contentRef, slug }) => {
               className="p-2 flex items-center text-gray-700 hover:bg-gray-100"
               aria-label="Share on Facebook"
             >
-              <i className="fab fa-facebook mr-2 text-xl" />
+              <Facebook size={20} className="mr-2" />
               <span className="text-sm">Facebook</span>
             </a>
             <a
@@ -164,7 +169,7 @@ const ShareControls = ({ title, url, lead, contentRef, slug }) => {
               className="p-2 flex items-center text-gray-700 hover:bg-gray-100"
               aria-label="Share on WhatsApp"
             >
-              <i className="fab fa-whatsapp mr-2 text-xl" />
+              <MessageCircle size={20} className="mr-2" />
               <span className="text-sm">WhatsApp</span>
             </a>
             <a
@@ -174,7 +179,7 @@ const ShareControls = ({ title, url, lead, contentRef, slug }) => {
               className="p-2 flex items-center text-gray-700 hover:bg-gray-100"
               aria-label="Share on LinkedIn"
             >
-              <i className="fab fa-linkedin mr-2 text-xl" />
+              <Linkedin size={20} className="mr-2" />
               <span className="text-sm">LinkedIn</span>
             </a>
             <a
@@ -184,7 +189,7 @@ const ShareControls = ({ title, url, lead, contentRef, slug }) => {
               className="p-2 flex items-center text-gray-700 hover:bg-gray-100"
               aria-label="Share on Instagram"
             >
-              <i className="fab fa-instagram mr-2 text-xl" />
+              <Instagram size={20} className="mr-2" />
               <span className="text-sm">Instagram</span>
             </a>
             <button
@@ -192,7 +197,11 @@ const ShareControls = ({ title, url, lead, contentRef, slug }) => {
               className="p-2 flex items-center text-gray-700 hover:bg-gray-100"
               aria-label={copied ? "Link copied" : "Copy link"}
             >
-              <i className={`fas ${copied ? 'fa-check' : 'fa-link'} mr-2 text-xl`} />
+              {copied ? (
+                <Check size={20} className="mr-2" />
+              ) : (
+                <Link2 size={20} className="mr-2" />
+              )}
               <span className="text-sm">{copied ? 'Copied!' : 'Copy Link'}</span>
             </button>
           </div>
@@ -206,8 +215,8 @@ const ShareControls = ({ title, url, lead, contentRef, slug }) => {
           onClick={() => setShowFontDropdown(!showFontDropdown)}
           className="p-2 bg-gray-800 text-white rounded-sm flex items-center gap-2 hover:bg-gray-900 transition-colors"
         >
-          <i className="fas fa-font mr-2"></i>
-          <i className="fas fa-chevron-down ml-2 text-xs"></i>
+          <Type size={16} className="mr-2" />
+          <ChevronDown size={12} className="ml-2" />
         </button>
 
         {showFontDropdown && (
@@ -236,8 +245,8 @@ const ShareControls = ({ title, url, lead, contentRef, slug }) => {
           onClick={() => setShowSizeDropdown(!showSizeDropdown)}
           className="p-2 bg-gray-800 text-white rounded-sm flex items-center gap-2 hover:bg-gray-900 transition-colors"
         >
-          <i className="fas fa-text-height mr-2"></i>
-          <i className="fas fa-chevron-down ml-2 text-xs"></i>
+          <TextCursorInput size={16} className="mr-2" />
+          <ChevronDown size={12} className="ml-2" />
         </button>
 
         {showSizeDropdown && (

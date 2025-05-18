@@ -9,6 +9,7 @@ const MediaRenderer = ({ media, className, onClick }) => {
   const videoRef = useRef(null);
   const [isPlaying, setIsPlaying] = useState(false);
   const [showPlayButton, setShowPlayButton] = useState(true);
+  const [imageError, setImageError] = useState(false);
 
   const handlePlayClick = (e) => {
     e.stopPropagation();
@@ -17,7 +18,9 @@ const MediaRenderer = ({ media, className, onClick }) => {
     if (isPlaying) {
       videoRef.current.pause();
     } else {
-      videoRef.current.play();
+      videoRef.current.play().catch(error => {
+        console.error("Video play failed:", error);
+      });
     }
     setIsPlaying(!isPlaying);
   };
@@ -28,39 +31,48 @@ const MediaRenderer = ({ media, className, onClick }) => {
     }
   };
 
-  // Helper function to construct media URLs
+  // Helper function to construct media URLs with better validation
   const getMediaUrl = (url) => {
     if (!url) return `${API_URL}/static/images/Breakingnews.png`;
-    return url.startsWith("http") ? url : `${API_URL}${url}`;
+    if (url.startsWith("http")) return url;
+    if (url.startsWith("/")) return `${API_URL}${url}`;
+    return `${API_URL}/${url}`;
   };
 
+  // Handle missing media case
   if (!media || (Array.isArray(media) && media.length === 0)) {
     return (
-      <div className={className} onClick={onClick} style={{ position: "relative", width: "100%", height: "100%" }}>
+      <div className={className} onClick={onClick} style={{ position: "relative" }}>
         <Image
           src={getMediaUrl()}
-          alt="Default News"
-          layout="fill"
-          objectFit="cover"
-          priority={true}
+          alt="Default News Image"
+          fill
+          className="object-cover"
+          priority
+          onError={() => setImageError(true)}
         />
+        {imageError && (
+          <div className="absolute inset-0 bg-gray-200 flex items-center justify-center">
+            <span className="text-gray-500">Image unavailable</span>
+          </div>
+        )}
       </div>
     );
   }
 
+  // Normalize media to array and get first item
   const mediaItems = Array.isArray(media) ? media : [media];
   const firstMedia = mediaItems[0];
 
-  if (firstMedia.type && firstMedia.type.toLowerCase() === "video") {
+  // Handle video case
+  if (firstMedia.type?.toLowerCase() === "video" || 
+      firstMedia.media_url?.match(/\.(mp4|webm|ogg|mov)$/i)) {
     return (
-      <div className={`relative ${className}`} onClick={handleVideoClick} style={{ cursor: "pointer" }}>
+      <div className={`relative ${className}`} onClick={handleVideoClick}>
         <video
           ref={videoRef}
           className="w-full h-full object-cover"
-          onClick={(e) => {
-            e.stopPropagation();
-            handlePlayClick(e);
-          }}
+          onClick={(e) => e.stopPropagation()}
           onPlay={() => {
             setIsPlaying(true);
             setShowPlayButton(false);
@@ -69,13 +81,18 @@ const MediaRenderer = ({ media, className, onClick }) => {
             setIsPlaying(false);
             setShowPlayButton(true);
           }}
+          onError={() => {
+            setShowPlayButton(false);
+            console.error("Video failed to load");
+          }}
           playsInline
-          controls={false} // hides default controls
+          controls={false}
           preload="metadata"
+          muted
         >
           <source
-            src={getMediaUrl(firstMedia.media_url)}
-            type={`video/${firstMedia.media_url.split(".").pop()}`}
+            src={getMediaUrl(firstMedia.media_url || firstMedia.url)}
+            type={`video/${firstMedia.media_url?.split(".").pop() || 'mp4'}`}
           />
           Your browser doesn't support videos
         </video>
@@ -84,11 +101,10 @@ const MediaRenderer = ({ media, className, onClick }) => {
           <button
             onClick={handlePlayClick}
             className="absolute inset-0 flex items-center justify-center video-control"
-            aria-label="Play video"
-            type="button"
+            aria-label={isPlaying ? "Pause video" : "Play video"}
           >
-            <div className="w-8 h-8 bg-red-600 rounded-full flex items-center justify-center">
-              <Play className="w-4 h-4 text-white fill-white" />
+            <div className="w-12 h-12 bg-red-600/80 rounded-full flex items-center justify-center hover:bg-red-600 transition-all">
+              <Play className={`w-6 h-6 text-white ${isPlaying ? 'hidden' : 'block'}`} />
             </div>
           </button>
         )}
@@ -96,20 +112,27 @@ const MediaRenderer = ({ media, className, onClick }) => {
     );
   }
 
-  // For images, use next/image for optimization
+  // Default to image handling
   return (
-    <div className={className} onClick={onClick} style={{ position: "relative", width: "100%", height: "100%" }}>
+    <div className={`relative ${className}`} onClick={onClick}>
       <Image
-        src={getMediaUrl(firstMedia.media_url)}
-        alt="News Media"
-        layout="fill"
-        objectFit="cover"
-        onError={({ currentTarget }) => {
-          currentTarget.onerror = null; // prevents looping
-          currentTarget.src = getMediaUrl();
-        }}
-        priority={true}
+        src={getMediaUrl(firstMedia.media_url || firstMedia.url)}
+        alt={firstMedia.alt || "News Image"}
+        fill
+        className="object-cover"
+        priority
+        onError={() => setImageError(true)}
       />
+      {imageError && (
+        <div className="absolute inset-0 bg-gray-200 flex items-center justify-center">
+          <Image
+            src={getMediaUrl()}
+            alt="Fallback News Image"
+            fill
+            className="object-cover"
+          />
+        </div>
+      )}
     </div>
   );
 };

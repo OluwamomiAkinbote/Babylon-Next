@@ -1,4 +1,6 @@
-// StoryViewWrapper.js
+'use client';
+
+
 import React from 'react';
 import axios from 'axios';
 import StoryView from './StoryView';

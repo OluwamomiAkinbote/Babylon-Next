@@ -3,6 +3,7 @@
 import { useEffect, useState, useRef } from "react";
 import { useParams } from "next/navigation";
 import axios from "axios";
+import { ChevronLeft, ChevronRight, Clock, CalendarDays } from "lucide-react";
 import FacebookComment from "./FacebookComment";
 import { API_URL } from "../config";
 
@@ -132,7 +133,7 @@ const BlogDetails = () => {
                   </p>
                 </div>
                 <div className="flex items-center space-x-2 text-gray-600 text-sm sm:text-base">
-                  <i className="fas fa-calendar-day text-green-700"></i>
+                  <CalendarDays className="text-green-700" size={18} />
                   <p>{formatDate(post.date)}</p>
                 </div>
               </div>
