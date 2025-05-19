@@ -10,6 +10,10 @@ export const metadata = {
   description: 'Breakingnews | Stories | Community',
   keywords: ['Breaking News', 'Football News', 'Trending news', 'Latest news'],
   authors: [{ name: 'Newstropy', url: 'https://www.newstropy.online/' }],
+  metadataBase: new URL('https://www.newstropy.online'),
+  alternates: {
+    canonical: '/',
+  },
   openGraph: {
     title: 'Newstropy',
     description: 'Breakingnews | Stories | Community',
@@ -34,29 +38,29 @@ export const metadata = {
   },
   icons: {
     icon: [
-      { url: '/src/assets/favicon/favicon.ico' },
-      { url: '/src/assets/favicon/favicon-16x16.png', sizes: '16x16', type: 'image/png' },
-      { url: '/src/assets/favicon/favicon-32x32.png', sizes: '32x32', type: 'image/png' },
+      { url: '/favicon.ico' },
+      { url: '/favicon-16x16.png', sizes: '16x16', type: 'image/png' },
+      { url: '/favicon-32x32.png', sizes: '32x32', type: 'image/png' },
     ],
     apple: [
-      { url: '/src/assets/favicon/apple-touch-icon.png', sizes: '180x180', type: 'image/png' },
+      { url: '/apple-touch-icon.png', sizes: '180x180', type: 'image/png' },
     ],
     other: [
       {
         rel: 'android-chrome-192x192',
-        url: '/src/assets/favicon/android-chrome-192x192.png',
+        url: '/android-chrome-192x192.png',
         sizes: '192x192',
         type: 'image/png',
       },
       {
         rel: 'android-chrome-512x512',
-        url: '/src/assets/favicon/android-chrome-512x512.png',
+        url: '/android-chrome-512x512.png',
         sizes: '512x512',
         type: 'image/png',
       },
       {
         rel: 'mask-icon',
-        url: '/src/assets/favicon/safari-pinned-tab.svg',
+        url: '/safari-pinned-tab.svg',
         color: '#5bbad5',
       },
     ],
@@ -70,7 +74,8 @@ export default function RootLayout({ children }) {
       <head>
         <meta charSet="utf-8" />
         <meta name="viewport" content="width=device-width, initial-scale=1" />
-        <meta name="theme-color" content="#ffffff" />
+        
+        <link rel="canonical" href="https://www.newstropy.online/" />
       </head>
       <body>
         <Header />
