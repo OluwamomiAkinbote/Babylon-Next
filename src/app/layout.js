@@ -1,6 +1,7 @@
 import './globals.css';
 import Header from '@/components/Header/Header';
 import Footer from '@/components/Footer/Footer';
+import Script from 'next/script';
 
 export const metadata = {
   title: {
@@ -65,7 +66,6 @@ export const metadata = {
       },
     ],
   },
-
 };
 
 export default function RootLayout({ children }) {
@@ -74,8 +74,19 @@ export default function RootLayout({ children }) {
       <head>
         <meta charSet="utf-8" />
         <meta name="viewport" content="width=device-width, initial-scale=1" />
-        
+        <meta name="msvalidate.01" content="7DE88AF0AF79A63AD5E3C1F47A2BE723" />
         <link rel="canonical" href="https://www.newstropy.online/" />
+        
+        {/* Google Tag Manager */}
+        <Script strategy="afterInteractive" src="https://www.googletagmanager.com/gtag/js?id=G-Z47KJ59Y0L" />
+        <Script id="gtag-init" strategy="afterInteractive">
+          {`
+            window.dataLayer = window.dataLayer || [];
+            function gtag(){dataLayer.push(arguments);}
+            gtag('js', new Date());
+            gtag('config', 'G-Z47KJ59Y0L');
+          `}
+        </Script>
       </head>
       <body>
         <Header />
