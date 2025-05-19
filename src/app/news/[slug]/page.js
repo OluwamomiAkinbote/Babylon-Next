@@ -44,48 +44,64 @@ async function getPostData(slug) {
   }
 }
 
-export async function generateMetadata(props) {
-  const params = await props.params;
+export async function generateMetadata({ params }) {
   const { slug } = params;
-
   const post = await getPostData(slug);
+
+  // Base URLs
+  const PUBLIC_URL = 'https://www.newstropy.online';
+  const DEFAULT_IMAGE = 'https://boltzmann.s3.us-east-1.amazonaws.com/Abstract/seo-logo-image.png';
 
   if (!post || !post.seo) {
     return {
       title: 'Post Not Found - Newstropy',
       description: 'The requested news article could not be found',
+      openGraph: {
+        images: [DEFAULT_IMAGE],
+      },
+      twitter: {
+        card: 'summary_large_image',
+        images: [DEFAULT_IMAGE],
+      }
     };
   }
 
   const seo = post.seo;
+  
+  // Handle Django-generated URLs (convert API URLs to public domain when needed)
+  const canonicalUrl = seo.url 
+    ? seo.url.replace('ayo.newstropy.online', 'www.newstropy.online')
+    : `${PUBLIC_URL}/news/${slug}`;
+
+  
 
   return {
     title: seo.title || 'Newstropy - Latest News',
-    description: seo.description || 'Stay updated with the latest news from Newstropy',
-    metadataBase: new URL(API_URL),
+    description: seo.description || 'Breaking news coverage and in-depth reporting',
+    metadataBase: new URL(PUBLIC_URL),
     alternates: {
-      canonical: seo.url || `/news/${slug}`,
+      canonical: canonicalUrl,
     },
     openGraph: {
       title: seo.title || 'Newstropy - Latest News',
-      description: seo.description || 'Stay updated with the latest news from Newstropy',
-      url: seo.url || `/news/${slug}`,
-      type: seo.type || 'article',
-      publishedTime: seo.date || null,
+      description: seo.description || 'Breaking news updates 24/7',
+      url: canonicalUrl,
+      type: 'article',
+      publishedTime: seo.date || new Date().toISOString(),
       images: [
         {
-          url: seo.image_url || `${API_URL}/static/images/Breakingnews.png`,
+          url: seo.image_url,
           width: 1200,
           height: 630,
-          alt: seo.title || 'Newstropy News',
+          alt: seo.title || 'Newstropy Breaking News',
         },
       ],
     },
     twitter: {
       card: 'summary_large_image',
       title: seo.title || 'Newstropy - Latest News',
-      description: seo.description || 'Stay updated with the latest news from Newstropy',
-      images: [seo.image_url || `${API_URL}/static/images/Breakingnews.png`],
+      description: seo.description || 'Breaking news updates',
+      images: seo.image_url,
     },
   };
 }
