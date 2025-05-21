@@ -71,7 +71,7 @@ const FeaturedCategories = () => {
 
             {/* Next 2 posts */}
             <div className="space-y-3">
-              {posts.slice(1, 3).map((post) => (
+              {posts.slice(1, 2).map((post) => (
                 <div key={post.id}>
                   <Link 
                     href={`/news/${post.slug}`}

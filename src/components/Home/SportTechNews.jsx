@@ -4,6 +4,7 @@ import React, { useEffect, useState } from "react";
 import axios from "axios";
 import MediaRenderer from "./MediaRenderer";
 import { API_URL } from '../config';
+import { ClipLoader } from "react-spinners";
 
 const formatDate = (dateString) => {
   return new Date(dateString).toLocaleString("en-US", {
@@ -75,7 +76,9 @@ const SportTechNews = () => {
       </div>
 
       {loading ? (
-        <p className="text-center text-gray-500">Loading news...</p>
+          <div className="flex justify-center items-center h-40">
+              <ClipLoader color="5fca31" size={30} />
+          </div>
       ) : currentPosts.length > 0 ? (
         <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
           {/* First Column - Latest Post */}

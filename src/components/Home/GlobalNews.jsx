@@ -7,6 +7,7 @@ import MediaRenderer from "./MediaRenderer";
 import { API_URL } from "../config";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
+import { ClipLoader } from "react-spinners";
 
 const GlobalNews = () => {
   const [globalNewsPosts, setGlobalNewsPosts] = useState([]);
@@ -78,13 +79,15 @@ const GlobalNews = () => {
       </div>
 
       {loading ? (
-        <p className="text-center text-gray-500">Loading...</p>
+            <div className="flex justify-center items-center h-40">
+              <ClipLoader color="5fca31" size={30} />
+            </div>
       ) : (
         <div className="relative">
           <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
             {displayedPosts.length > 0 ? (
               displayedPosts.map((post) => (
-                <div key={post.id} className="bg-white duration-200 hover:shadow-md transition-shadow">
+                <div key={post.id} className="bg-white duration-200">
                   <div className="relative">
                     <Link href={`/news/${post.slug}`}>
                       <MediaRenderer 

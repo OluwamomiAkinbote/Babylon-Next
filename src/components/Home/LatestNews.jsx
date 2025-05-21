@@ -7,6 +7,7 @@ import { ChevronLeft, ChevronRight, Clock } from "lucide-react";
 import MediaRenderer from "./MediaRenderer";
 import { API_URL } from "../config";
 import { useRouter } from "next/navigation";
+import { ClipLoader } from "react-spinners";
 
 const LatestNews = () => {
   const [mainPost, setMainPost] = useState(null);
@@ -14,6 +15,7 @@ const LatestNews = () => {
   const [exclusivePosts, setExclusivePosts] = useState([]);
   const [politicsIndex, setPoliticsIndex] = useState(0);
   const [exclusiveIndex, setExclusiveIndex] = useState(0);
+  const [isLoading, setIsLoading] = useState(true);
   const postsPerPage = 5;
   const router = useRouter();
 
@@ -35,6 +37,7 @@ const LatestNews = () => {
   };
 
   useEffect(() => {
+    setIsLoading(true);
     axios
       .get(`${API_URL}/main-exclusive/`)
       .then((response) => {
@@ -42,7 +45,8 @@ const LatestNews = () => {
         setPoliticsPosts(response.data.politics_posts || []);
         setExclusivePosts(response.data.exclusive_posts || []);
       })
-      .catch((error) => console.error("Error fetching data:", error));
+      .catch((error) => console.error("Error fetching data:", error))
+      .finally(() => setIsLoading(false));
   }, []);
 
   const nextPolitics = () => {
@@ -72,6 +76,14 @@ const LatestNews = () => {
   const handleMediaClick = (slug) => {
     router.push(`/news/${slug}`);
   };
+
+  if (isLoading) {
+    return (
+            <div className="flex justify-center items-center h-40">
+              <ClipLoader color="5fca31" size={30} />
+            </div>
+    );
+  }
 
   return (
     <div className="px-2 py-4 bg-white font-robotoCondensed">
