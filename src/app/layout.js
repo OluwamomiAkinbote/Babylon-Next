@@ -5,7 +5,7 @@ import Script from 'next/script';
 
 export const metadata = {
   title: {
-    default: 'Newstropy',
+    default: 'Newstropy - Breaking News | Stories | Community',
     template: '%s | Newstropy'
   },
   description: 'Breakingnews | Stories | Community',
@@ -16,7 +16,7 @@ export const metadata = {
     canonical: '/',
   },
   openGraph: {
-    title: 'Newstropy',
+    title: 'Newstropy - Breaking News | Stories | Community',
     description: 'Breakingnews | Stories | Community',
     url: 'https://www.newstropy.online/',
     siteName: 'Newstropy',
@@ -33,7 +33,8 @@ export const metadata = {
   },
   twitter: {
     card: 'summary_large_image',
-    title: 'Newstropy',
+    title: 'Newstropy - Breaking News | Stories | Community',
+    site: '@Newstropy',
     description: 'Breakingnews | Stories | Community',
     images: ['https://boltzmann.s3.us-east-1.amazonaws.com/Abstract/seo-logo-image.png'],
   },

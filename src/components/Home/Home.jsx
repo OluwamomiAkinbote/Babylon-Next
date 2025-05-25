@@ -1,7 +1,7 @@
 "use client";
 
 import FeaturedCategories from "./FeaturedCategories";
-import GlobalNews from "./GlobalNews";
+import WorldNews from "./WorldNews";
 import Hero from "./Hero";
 import LatestNews from "./LatestNews";
 import SportTechNews from "./SportTechNews";
@@ -26,7 +26,7 @@ const Home = () => {
     
       {/* Global News Section - Inherits default font */}
       <div>
-        <GlobalNews />
+        <WorldNews />
       </div>
       
       {/* Sports & Tech News Section - Inherits default font */}

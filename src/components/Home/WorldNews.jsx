@@ -9,25 +9,25 @@ import Link from "next/link";
 import { useRouter } from "next/navigation";
 import { ClipLoader } from "react-spinners";
 
-const GlobalNews = () => {
-  const [globalNewsPosts, setGlobalNewsPosts] = useState([]);
+const WorldNews = () => {
+  const [worldNewsPosts, setWorldNewsPosts] = useState([]);
   const [loading, setLoading] = useState(true);
   const [currentPage, setCurrentPage] = useState(0);
   const postsPerPage = 4;
   const router = useRouter();
 
   useEffect(() => {
-    const fetchGlobalNews = async () => {
+    const fetchWorldNews = async () => {
       try {
-        const response = await axios.get(`${API_URL}/global-news/`);
-        setGlobalNewsPosts(response.data.global_news_posts);
+        const response = await axios.get(`${API_URL}/world-news/`);
+        setWorldNewsPosts(response.data.world_news_posts);
       } catch (error) {
-        console.error("Error fetching global news:", error);
+        console.error("Error fetching world news:", error);
       } finally {
         setLoading(false);
       }
     };
-    fetchGlobalNews();
+    fetchWorldNews();
   }, []);
 
   const formatDate = (dateString) => {
@@ -42,9 +42,9 @@ const GlobalNews = () => {
     });
   };
 
-  const totalPages = Math.ceil(globalNewsPosts.length / postsPerPage);
+  const totalPages = Math.ceil(worldNewsPosts.length / postsPerPage);
   const startIndex = currentPage * postsPerPage;
-  const displayedPosts = globalNewsPosts.slice(startIndex, startIndex + postsPerPage);
+  const displayedPosts = worldNewsPosts.slice(startIndex, startIndex + postsPerPage);
 
   const nextPage = () => {
     if (currentPage < totalPages - 1) setCurrentPage(currentPage + 1);
@@ -55,7 +55,7 @@ const GlobalNews = () => {
   };
 
   return (
-    <div className="global_news px-2 py-4 font-robotoCondensed border-t border-b border-gray-200">
+    <div className="world_news px-2 py-4 font-robotoCondensed border-t border-b border-gray-200">
       <div className="flex justify-between items-center mb-4">
         <div className="flex-1"></div>
         <div className="flex space-x-2">
@@ -110,7 +110,7 @@ const GlobalNews = () => {
                 </div>
               ))
             ) : (
-              <p className="text-center text-gray-500 col-span-full">No global news found.</p>
+              <p className="text-center text-gray-500 col-span-full">No world news found.</p>
             )}
           </div>
         </div>
@@ -119,4 +119,4 @@ const GlobalNews = () => {
   );
 };
 
-export default GlobalNews;
+export default WorldNews;

@@ -9,14 +9,12 @@ import { API_URL } from "../config";
 import { useRouter } from "next/navigation";
 import { ClipLoader } from "react-spinners";
 
-
-
 const LatestNews = () => {
   const [mainPost, setMainPost] = useState(null);
   const [politicsPosts, setPoliticsPosts] = useState([]);
-  const [exclusivePosts, setExclusivePosts] = useState([]);
+  const [breakingPosts, setBreakingPosts] = useState([]);
   const [politicsIndex, setPoliticsIndex] = useState(0);
-  const [exclusiveIndex, setExclusiveIndex] = useState(0);
+  const [breakingIndex, setBreakingIndex] = useState(0);
   const [isLoading, setIsLoading] = useState(true);
   const postsPerPage = 5;
   const router = useRouter();
@@ -38,8 +36,6 @@ const LatestNews = () => {
     return doc.body.textContent || "";
   };
 
-
-
   useEffect(() => {
     setIsLoading(true);
     axios
@@ -47,7 +43,7 @@ const LatestNews = () => {
       .then((response) => {
         setMainPost(response.data.main_post);
         setPoliticsPosts(response.data.politics_posts || []);
-        setExclusivePosts(response.data.exclusive_posts || []);
+        setBreakingPosts(response.data.breaking_posts || []);
       })
       .catch((error) => console.error("Error fetching data:", error))
       .finally(() => setIsLoading(false));
@@ -65,15 +61,15 @@ const LatestNews = () => {
     }
   };
 
-  const nextExclusive = () => {
-    if (exclusiveIndex + postsPerPage < exclusivePosts.length) {
-      setExclusiveIndex(exclusiveIndex + postsPerPage);
+  const nextBreaking = () => {
+    if (breakingIndex + postsPerPage < breakingPosts.length) {
+      setBreakingIndex(breakingIndex + postsPerPage);
     }
   };
 
-  const prevExclusive = () => {
-    if (exclusiveIndex - postsPerPage >= 0) {
-      setExclusiveIndex(exclusiveIndex - postsPerPage);
+  const prevBreaking = () => {
+    if (breakingIndex - postsPerPage >= 0) {
+      setBreakingIndex(breakingIndex - postsPerPage);
     }
   };
 
@@ -83,9 +79,9 @@ const LatestNews = () => {
 
   if (isLoading) {
     return (
-            <div className="flex justify-center items-center h-40">
-              <ClipLoader color="5fca31" size={30} />
-            </div>
+      <div className="flex justify-center items-center h-40">
+        <ClipLoader color="5fca31" size={30} />
+      </div>
     );
   }
 
@@ -165,7 +161,6 @@ const LatestNews = () => {
                       <Clock className="text-red-500 text-xs mr-1" size={14} />
                       <span>{formatDate(post.date)}</span>
                     </div>
-
                   </div>
                 </div>
               ))}
@@ -195,11 +190,11 @@ const LatestNews = () => {
           )}
         </div>
 
-        {/* Exclusive Posts */}
+        {/* Breaking Posts */}
         <div className="col-span-1 latest_news_list pt-4 relative">
-          {exclusivePosts.length > 0 ? (
+          {breakingPosts.length > 0 ? (
             <>
-              {exclusivePosts.slice(exclusiveIndex, exclusiveIndex + postsPerPage).map((post) => (
+              {breakingPosts.slice(breakingIndex, breakingIndex + postsPerPage).map((post) => (
                 <div key={post.id} className="mb-4 border-b pb-4">
                   <a href={`/news/${post.slug}`} className="sm:text-md font-medium text-gray-900 hover:underline block mb-2">
                     {post.title}
@@ -212,19 +207,19 @@ const LatestNews = () => {
               ))}
               <div className="flex justify-end mt-2 space-x-2">
                 <button
-                  onClick={prevExclusive}
-                  disabled={exclusiveIndex === 0}
+                  onClick={prevBreaking}
+                  disabled={breakingIndex === 0}
                   className={`p-1 rounded ${
-                    exclusiveIndex === 0 ? "text-gray-400" : "text-gray-700 hover:bg-gray-100"
+                    breakingIndex === 0 ? "text-gray-400" : "text-gray-700 hover:bg-gray-100"
                   }`}
                 >
                   <ChevronLeft size={20} />
                 </button>
                 <button
-                  onClick={nextExclusive}
-                  disabled={exclusiveIndex + postsPerPage >= exclusivePosts.length}
+                  onClick={nextBreaking}
+                  disabled={breakingIndex + postsPerPage >= breakingPosts.length}
                   className={`p-1 rounded ${
-                    exclusiveIndex + postsPerPage >= exclusivePosts.length ? "text-gray-400" : "text-gray-700 hover:bg-gray-100"
+                    breakingIndex + postsPerPage >= breakingPosts.length ? "text-gray-400" : "text-gray-700 hover:bg-gray-100"
                   }`}
                 >
                   <ChevronRight size={20} />
@@ -232,7 +227,7 @@ const LatestNews = () => {
               </div>
             </>
           ) : (
-            <p>No exclusive posts available.</p>
+            <p>No breaking posts available.</p>
           )}
         </div>
       </div>
