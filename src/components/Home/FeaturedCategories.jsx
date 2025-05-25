@@ -3,7 +3,7 @@
 import { useEffect, useState } from "react";
 import axios from "axios";
 import Link from "next/link";
-import { useRouter } from "next/navigation"; 
+import { useRouter } from "next/navigation";
 import { ChevronRight } from "lucide-react";
 import { API_URL } from "../config";
 import MediaRenderer from "./MediaRenderer";
@@ -37,22 +37,26 @@ const FeaturedCategories = () => {
     <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
       {categories.map((category) => {
         const posts = categoryData[category] || [];
+        const categorySlug = category.toLowerCase();
 
         return (
           <div key={category} className="bg-white p-4">
-            {/* Header */}
-            <div className="flex items-center justify-between mb-4">
-              <h2 className="text-xl font-medium text-gray-900">{category}</h2>
-              <Link 
-                href="#" 
-                className="text-green-600 hover:text-blue-700 flex items-center"
-                aria-label={`View more ${category} news`}
-              >
-                <ChevronRight size={26} />
-              </Link>
-            </div>
+            {/* Redesigned Header */}
+            <Link href={`/category/${categorySlug}`} className="group block mb-4">
+              <div className="flex items-center justify-between">
+                <div>
+                  <h2 className="text-md font-medium text-gray-800 group-hover:text-green-600 transition-colors">
+                    {category}
+                  </h2>
+                  <div className="w-full h-px bg-gray-200 mt-1">
+                    <div className="w-8 h-0.5 bg-green-600 group-hover:w-12 transition-all duration-300"></div>
+                  </div>
+                </div>
 
-            {/* First post with MediaRenderer */}
+              </div>
+            </Link>
+
+            {/* Rest of the card remains exactly the same */}
             {posts.length > 0 && (
               <Link 
                 href={`/news/${posts[0].slug}`}
@@ -69,7 +73,6 @@ const FeaturedCategories = () => {
               </Link>
             )}
 
-            {/* Next 2 posts */}
             <div className="space-y-3">
               {posts.slice(1, 2).map((post) => (
                 <div key={post.id}>

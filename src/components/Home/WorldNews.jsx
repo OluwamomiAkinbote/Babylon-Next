@@ -55,9 +55,14 @@ const WorldNews = () => {
   };
 
   return (
-    <div className="world_news px-2 py-4 font-robotoCondensed border-t border-b border-gray-200">
+    <div className="world_news px-2 py-4 font-robotoCondensed">
+      {/* Minimal Left-Aligned Header with Slug Link */}
       <div className="flex justify-between items-center mb-4">
-        <div className="flex-1"></div>
+        <Link href="/category/world" className="group">
+          <h2 className="text-md font-medium text-gray-800 pb-1 border-b-2 border-gray-600 group-hover:border-blue-600 transition-colors duration-200">
+            World News
+          </h2>
+        </Link>
         <div className="flex space-x-2">
           <button 
             onClick={prevPage} 
@@ -78,16 +83,17 @@ const WorldNews = () => {
         </div>
       </div>
 
+      {/* Rest of the component remains exactly the same */}
       {loading ? (
-            <div className="flex justify-center items-center h-40">
-              <ClipLoader color="5fca31" size={30} />
-            </div>
+        <div className="flex justify-center items-center h-40">
+          <ClipLoader color="#5fca31" size={30} />
+        </div>
       ) : (
         <div className="relative">
           <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
             {displayedPosts.length > 0 ? (
               displayedPosts.map((post) => (
-                <div key={post.id} className="bg-white duration-200">
+                <div key={post.id} className="bg-white">
                   <div className="relative">
                     <Link href={`/news/${post.slug}`}>
                       <MediaRenderer 
