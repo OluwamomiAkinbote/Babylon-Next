@@ -12,6 +12,8 @@ import Link from 'next/link';
 import Image from 'next/image';
 import Script from 'next/script';
 import BlogSidebar from './BlogSidebar';
+import CommentCount from './CommentCount';
+
 
 const BlogDetails = () => {
   const params = useParams();
@@ -116,8 +118,8 @@ const BlogDetails = () => {
               </div>
             )}
 
-            <div className="flex flex-col sm:flex-row items-start sm:items-center font-poppins">
-              <div className="flex flex-col sm:flex-row sm:items-center sm:space-x-4 text-gray-700 font-medium">
+            <div className="flex flex-col sm:flex-row items-start sm:items-center font-poppins mb-4">
+              <div className="flex flex-col sm:flex-row sm:items-center sm:space-x-4 text-gray-700 font-medium ">
                 <div className="flex items-center space-x-2 mb-2 sm:mb-0">
                   <div className="w-5 h-5 rounded-full bg-gray-200 relative">
                     <Image
@@ -135,6 +137,10 @@ const BlogDetails = () => {
                   <CalendarDays className="text-green-700" size={18} />
                   <p>{formatDate(post.date)}</p>
                 </div>
+                <div className="flex items-center space-x-2 text-gray-600 text-sm sm:text-base">
+                  <CommentCount url={currentUrl} />
+                </div>
+
               </div>
             </div>
 
@@ -171,16 +177,16 @@ const BlogDetails = () => {
                 ></span>
               </p>
             </div>
+            
+              <BlogSidebar 
+                relatedPosts={relatedPosts}
+              />
 
-            <div className="mt-6">
+            <div className="mt-6 mb-8" id="fb-comment-section">
               <FacebookComment url={currentUrl} />
             </div>
           </div>
 
-          <BlogSidebar 
-            relatedPosts={relatedPosts}
-            recommendedPosts={recommendedPosts}
-          />
         </div>
       </div>
     </>
