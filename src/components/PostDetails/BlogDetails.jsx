@@ -81,7 +81,7 @@ const BlogDetails = () => {
         `}
       </Script>
 
-      <div className="bg-white font-robotoCondensed">
+      <div className="bg-white font-robotoCondensed ">
         <div className="grid grid-cols-1 gap-2 sm:grid-cols-3 overflow-hidden">
           <div className="p-2 sm:col-span-2 overflow-hidden">
             <nav className="mb-4 text-md sm:text-md md:text-base">
@@ -178,13 +178,16 @@ const BlogDetails = () => {
               </p>
             </div>
             
-              <BlogSidebar 
-                relatedPosts={relatedPosts}
-              />
-
             <div className="mt-6 mb-8" id="fb-comment-section">
               <FacebookComment url={currentUrl} />
             </div>
+            <div className="mt-6 mb-8">
+              <BlogSidebar 
+                relatedPosts={relatedPosts}
+              />
+            </div>
+
+
           </div>
 
         </div>

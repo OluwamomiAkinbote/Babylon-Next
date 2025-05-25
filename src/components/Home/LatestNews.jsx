@@ -9,6 +9,8 @@ import { API_URL } from "../config";
 import { useRouter } from "next/navigation";
 import { ClipLoader } from "react-spinners";
 
+
+
 const LatestNews = () => {
   const [mainPost, setMainPost] = useState(null);
   const [politicsPosts, setPoliticsPosts] = useState([]);
@@ -35,6 +37,8 @@ const LatestNews = () => {
     const doc = new DOMParser().parseFromString(html, "text/html");
     return doc.body.textContent || "";
   };
+
+
 
   useEffect(() => {
     setIsLoading(true);
@@ -127,6 +131,7 @@ const LatestNews = () => {
                     <Clock className="text-red-500 text-xs mr-1" size={14} />
                     <p className="text-gray-700 text-sm">{formatDate(mainPost.date)}</p>
                   </div>
+
                   <p className="text-gray-600 mt-2 text-lg font-normal">
                     {stripHtml(mainPost.content)?.slice(0, 160) + "..."}
                   </p>
@@ -160,6 +165,7 @@ const LatestNews = () => {
                       <Clock className="text-red-500 text-xs mr-1" size={14} />
                       <span>{formatDate(post.date)}</span>
                     </div>
+
                   </div>
                 </div>
               ))}
