@@ -102,7 +102,7 @@ const WorldNews = () => {
                       />
                     </Link>
                   </div>
-                  <div className="p-4">
+                  <div className="">
                     <Link 
                       href={`/news/${post.slug}`}
                       className="text-md font-medium mb-2 text-gray-800 hover:underline block"
