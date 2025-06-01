@@ -1,7 +1,6 @@
 "use client";
 
 import { useRef, useState } from "react";
-import Image from "next/image";
 import { Play } from "lucide-react";
 import { API_URL } from "../config";
 
@@ -18,7 +17,7 @@ const MediaRenderer = ({ media, className, onClick }) => {
     if (isPlaying) {
       videoRef.current.pause();
     } else {
-      videoRef.current.play().catch(error => {
+      videoRef.current.play().catch((error) => {
         console.error("Video play failed:", error);
       });
     }
@@ -31,7 +30,6 @@ const MediaRenderer = ({ media, className, onClick }) => {
     }
   };
 
-  // Helper function to construct media URLs with better validation
   const getMediaUrl = (url) => {
     if (!url) return `${API_URL}/static/images/Breakingnews.png`;
     if (url.startsWith("http")) return url;
@@ -39,16 +37,15 @@ const MediaRenderer = ({ media, className, onClick }) => {
     return `${API_URL}/${url}`;
   };
 
-  // Handle missing media case
+  // No media
   if (!media || (Array.isArray(media) && media.length === 0)) {
     return (
       <div className={className} onClick={onClick} style={{ position: "relative" }}>
-        <Image
+        <img
           src={getMediaUrl()}
           alt="Default News Image"
-          fill
-          className="object-cover"
-          priority
+          loading="lazy"
+          className="w-full h-full object-cover absolute inset-0"
           onError={() => setImageError(true)}
         />
         {imageError && (
@@ -60,13 +57,13 @@ const MediaRenderer = ({ media, className, onClick }) => {
     );
   }
 
-  // Normalize media to array and get first item
   const mediaItems = Array.isArray(media) ? media : [media];
   const firstMedia = mediaItems[0];
 
-  // Handle video case
-  if (firstMedia.type?.toLowerCase() === "video" || 
-      firstMedia.media_url?.match(/\.(mp4|webm|ogg|mov)$/i)) {
+  if (
+    firstMedia.type?.toLowerCase() === "video" ||
+    firstMedia.media_url?.match(/\.(mp4|webm|ogg|mov)$/i)
+  ) {
     return (
       <div className={`relative ${className}`} onClick={handleVideoClick}>
         <video
@@ -92,7 +89,7 @@ const MediaRenderer = ({ media, className, onClick }) => {
         >
           <source
             src={getMediaUrl(firstMedia.media_url || firstMedia.url)}
-            type={`video/${firstMedia.media_url?.split(".").pop() || 'mp4'}`}
+            type={`video/${firstMedia.media_url?.split(".").pop() || "mp4"}`}
           />
           Your browser doesn't support videos
         </video>
@@ -104,7 +101,7 @@ const MediaRenderer = ({ media, className, onClick }) => {
             aria-label={isPlaying ? "Pause video" : "Play video"}
           >
             <div className="w-12 h-12 bg-red-600/80 rounded-full flex items-center justify-center hover:bg-red-600 transition-all">
-              <Play className={`w-6 h-6 text-white ${isPlaying ? 'hidden' : 'block'}`} />
+              <Play className={`w-6 h-6 text-white ${isPlaying ? "hidden" : "block"}`} />
             </div>
           </button>
         )}
@@ -112,26 +109,22 @@ const MediaRenderer = ({ media, className, onClick }) => {
     );
   }
 
-  // Default to image handling
   return (
     <div className={`relative ${className}`} onClick={onClick}>
-      <Image
-        src={getMediaUrl(firstMedia.media_url || firstMedia.url)}
-        alt={firstMedia.alt || "News Image"}
-        fill
-        className="object-cover"
-        priority
-        onError={() => setImageError(true)}
-      />
-      {imageError && (
-        <div className="absolute inset-0 bg-gray-200 flex items-center justify-center">
-          <Image
-            src={getMediaUrl()}
-            alt="Fallback News Image"
-            fill
-            className="object-cover"
-          />
-        </div>
+      {!imageError ? (
+        <img
+          src={getMediaUrl(firstMedia.media_url || firstMedia.url)}
+          alt={firstMedia.alt || "News Image"}
+          loading="lazy"
+          className="w-full h-full object-cover absolute inset-0"
+          onError={() => setImageError(true)}
+        />
+      ) : (
+        <img
+          src={getMediaUrl()}
+          alt="Fallback News Image"
+          className="w-full h-full object-cover absolute inset-0"
+        />
       )}
     </div>
   );
