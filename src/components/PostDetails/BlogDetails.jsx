@@ -189,6 +189,24 @@ const BlogDetails = () => {
 
 
           </div>
+          {/* advert banner */}
+          <div className="w-full max-w-md mx-auto my-8">
+            <a
+              href="https://maxonex-system.vercel.app/"
+              target="_blank"
+              rel="noopener noreferrer"
+              className="block rounded-sm overflow-hidden shadow-sm"
+            >
+              <img
+                src="https://boltzmann.s3.us-east-1.amazonaws.com/Abstract/Web-banner-square.png"
+                alt="maxonex system"
+                loading="lazy"
+                className="w-full h-auto object-cover"
+              />
+            </a>
+          </div>
+
+
 
         </div>
       </div>

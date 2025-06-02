@@ -22,16 +22,15 @@ const CommentCount = ({ url }) => {
 
   return (
     <div
-      className="bg-red-700 text-white px-4 py-1 rounded-full inline-flex items-center text-sm font-semibold cursor-pointer"
+      className="inline-flex items-center px-3 py-1 rounded-full text-sm font-medium bg-gray-100 text-gray-800 border border-gray-300 hover:bg-green-100 hover:border-green-300 transition cursor-pointer"
       onClick={() => {
-        // Optional scroll to comment section
         const commentSection = document.getElementById('fb-comment-section');
         if (commentSection) {
           commentSection.scrollIntoView({ behavior: 'smooth' });
         }
       }}
     >
-      <MessageCircle className="mr-2" size={16} />
+      <MessageCircle className="mr-1.5 text-green-600" size={14} />
       <span>
         Comments{' '}
         <span className="fb-comments-count" data-href={url}></span>
