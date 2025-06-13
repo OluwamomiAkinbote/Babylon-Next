@@ -75,7 +75,7 @@ const Header = () => {
             />
           </Link>
 
-          <nav className="flex space-x-6 text-sm font-semibold capitalize relative">
+          <nav className="flex space-x-6 text-sm font-normal capitalize relative">
             {navbarCategories.map((cat, idx) => (
               <div
                 key={idx}

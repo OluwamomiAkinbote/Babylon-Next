@@ -81,7 +81,7 @@ const BlogDetails = () => {
         `}
       </Script>
 
-      <div className="bg-white font-robotoCondensed ">
+      <div className="bg-white font-robotoCondensed sm:p-3 md:p-0 ">
         <div className="grid grid-cols-1 gap-2 sm:grid-cols-3 overflow-hidden">
           <div className="p-2 sm:col-span-2 overflow-hidden">
             <nav className="mb-4 text-md sm:text-md md:text-base">
@@ -190,7 +190,7 @@ const BlogDetails = () => {
 
           </div>
           {/* advert banner */}
-          <div className="w-full max-w-md mx-auto my-8">
+          <div className="w-full mx-auto my-8 p-2">
             <a
               href="https://maxonex-system.vercel.app/"
               target="_blank"
