@@ -182,11 +182,11 @@ const BlogDetails = () => {
               <FacebookComment url={currentUrl} />
             </div>
             <div className="mt-6 mb-8">
-              <BlogSidebar 
+              {/* <BlogSidebar 
                 relatedPosts={relatedPosts}
-              />
+              /> */}
             </div>
-
+{/* side bar */}
 
           </div>
           {/* advert banner */}

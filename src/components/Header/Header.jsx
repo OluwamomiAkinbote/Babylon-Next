@@ -107,13 +107,10 @@ const Header = () => {
               <FaUserPlus size={24} />
             </Link>
             <div className="bg-gray-100 border border-gray-300 rounded-full px-4 py-1 flex items-center">
-              <FaSearch className="text-gray-500 mr-2" />
-              <input
-                type="text"
-                placeholder="Search"
-                className="bg-transparent focus:outline-none text-gray-800 w-32"
-                aria-label="Search"
-              />
+                <Link href="/search" aria-label="Search">
+                  <FaSearch size={22} className="text-green-600 hover:text-green-800" />
+                </Link>
+
             </div>
           </div>
         </div>

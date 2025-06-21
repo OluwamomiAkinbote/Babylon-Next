@@ -89,7 +89,7 @@ const StoriesHeader = ({ stories, onStoryClick }) => {
 
             <div
                 ref={containerRef}
-                className="flex overflow-x-auto space-x-2 md:space-x-4 scrollbar-hide"
+                className="flex overflow-x-auto md:space-x-4 scrollbar-hide"
                 onScroll={checkScrollPosition}
             >
                 {sortedStories.map((story) => {
