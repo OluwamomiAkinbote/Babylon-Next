@@ -13,6 +13,7 @@ import Image from 'next/image';
 import Script from 'next/script';
 import BlogSidebar from './BlogSidebar';
 import CommentCount from './CommentCount';
+import StoryView from "../Header/Story/StoryView";
 
 
 const BlogDetails = () => {
@@ -81,7 +82,11 @@ const BlogDetails = () => {
         `}
       </Script>
 
+      <div>
+        <StoryView />
+      </div>  
       <div className="bg-white font-robotoCondensed sm:p-3 md:p-0 ">
+        
         <div className="grid grid-cols-1 gap-2 sm:grid-cols-3 overflow-hidden">
           <div className="p-2 sm:col-span-2 overflow-hidden">
             <nav className="mb-4 text-md sm:text-md md:text-base">

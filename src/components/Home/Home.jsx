@@ -5,10 +5,15 @@ import WorldNews from "./WorldNews";
 import Hero from "./Hero";
 import LatestNews from "./LatestNews";
 import SportTechNews from "./SportTechNews";
+import StoryView from "../Header/Story/StoryView";
 
 const Home = () => {
   return (
     <div className="md:mx-12">
+      {/* Hero Section - Uses Barlow font */}
+      <div className="font-barlow">
+        <StoryView />
+      </div>
       {/* Hero Section - Uses Barlow font */}
       <div className="font-barlow">
         <Hero />

@@ -45,7 +45,7 @@ const MediaRenderer = ({ media, className, onClick }) => {
           src={getMediaUrl()}
           alt="Default News Image"
           loading="lazy"
-          className="w-full h-full object-cover absolute inset-0"
+          className="w-full h-full object-cover"
           onError={() => setImageError(true)}
         />
         {imageError && (
@@ -60,10 +60,12 @@ const MediaRenderer = ({ media, className, onClick }) => {
   const mediaItems = Array.isArray(media) ? media : [media];
   const firstMedia = mediaItems[0];
 
-  if (
-    firstMedia.type?.toLowerCase() === "video" ||
-    firstMedia.media_url?.match(/\.(mp4|webm|ogg|mov)$/i)
-  ) {
+  // Check if the media is a video
+  const isVideo = firstMedia.type?.toLowerCase() === "video" || 
+                 firstMedia.media_url?.match(/\.(mp4|webm|ogg|mov)$/i) || 
+                 firstMedia.url?.match(/\.(mp4|webm|ogg|mov)$/i);
+
+  if (isVideo) {
     return (
       <div className={`relative ${className}`} onClick={handleVideoClick}>
         <video
@@ -109,21 +111,22 @@ const MediaRenderer = ({ media, className, onClick }) => {
     );
   }
 
+  // Default to image rendering
   return (
-    <div className={`relative ${className}`} onClick={onClick}>
+    <div className={className} onClick={onClick} style={{ position: "relative" }}>
       {!imageError ? (
         <img
           src={getMediaUrl(firstMedia.media_url || firstMedia.url)}
           alt={firstMedia.alt || "News Image"}
           loading="lazy"
-          className="w-full h-full object-cover absolute inset-0"
+          className="w-full h-full object-cover"
           onError={() => setImageError(true)}
         />
       ) : (
         <img
           src={getMediaUrl()}
           alt="Fallback News Image"
-          className="w-full h-full object-cover absolute inset-0"
+          className="w-full h-full object-cover"
         />
       )}
     </div>
